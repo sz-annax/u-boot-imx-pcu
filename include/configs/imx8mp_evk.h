@@ -125,6 +125,31 @@
 				"echo WARN: Cannot load the DT; " \
 			"fi; " \
 		"fi;\0" \
+	"recovery_op=no\0" \
+	"recovery_pending_cnt=0\0" \
+	"recovery_img_addr=0x44000000\0" \
+	"recoveryfdtfile=imx8mp-evk-recovery.dtb\0" \
+	"recoveryimage=recoveryImage\0" \
+	"recoveryrootfs=recovery-rootfs.img\0" \
+	"recoveryargs=setenv bootargs console=ttymxc1,115200 earlycon\0 " \
+	"loadrecoveryimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${recoveryimage}\0" \
+	"loadrecoveryfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${recoveryfdtfile}\0" \
+	"loadrecoveryrootfs=fatload mmc ${mmcdev}:${mmcpart} ${recovery_img_addr} ${recoveryrootfs}\0" \
+	"boot_recovery_os=booti ${loadaddr} ${recovery_img_addr} ${fdt_addr_r};\0" \
+	"recoveryboot=echo Booting to RECOVERY MODE ...; " \
+		"if run loadrecoveryimage; then " \
+			"if run loadrecoveryfdt; then " \
+				"if run loadrecoveryrootfs; then " \
+					"run boot_recovery_os; " \
+				"else " \
+					"echo ERR: failed to load recovery rootfs; " \
+				"fi; " \
+			"else " \
+				"echo ERR: failed to load recovery fdt; " \
+			"fi; " \
+		"else " \
+			"echo ERR: failed to load recovery image; " \
+		"fi;\0" \
 	"netargs=setenv bootargs ${jh_clk} ${mcore_clk} console=${console} " \
 		"root=/dev/nfs " \
 		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
@@ -146,14 +171,32 @@
 			"fi; " \
 		"fi;\0" \
 	"bsp_bootcmd=echo Running BSP bootcmd ...; " \
+		"if test -n ${environment_saved} && test ${environment_saved} = yes; then " \
+			"echo Environment already saved; " \
+		"else " \
+			"echo Saving default environment to eMMC; " \
+			"setenv environment_saved yes; " \
+			"saveenv; " \
+		"fi; " \
 		"mmc dev ${mmcdev}; if mmc rescan; then " \
 		   "if run loadbootscript; then " \
 			   "run bootscript; " \
 		   "else " \
-			   "if run loadimage; then " \
-				   "run mmcboot; " \
-			   "else run netboot; " \
-			   "fi; " \
+			   "if test ${sec_boot} = yes; then " \
+				   "if run loadcntr; then " \
+					   "run mmcboot; " \
+				   "else run netboot; " \
+				   "fi; " \
+			    "else " \
+					"if test ${recovery_op} = start || test ${recovery_pending_cnt} = 3; then " \
+						"run recoveryboot; " \
+					"else " \
+						"if run loadimage; then " \
+							"run mmcboot; " \
+						"else run netboot; " \
+						"fi; " \
+					"fi; " \
+				"fi; " \
 		   "fi; " \
 	   "fi;"
 #endif
