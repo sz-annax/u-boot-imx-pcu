@@ -179,26 +179,19 @@
 			"saveenv; " \
 		"fi; " \
 		"mmc dev ${mmcdev}; if mmc rescan; then " \
-		   "if run loadbootscript; then " \
-			   "run bootscript; " \
-		   "else " \
-			   "if test ${sec_boot} = yes; then " \
-				   "if run loadcntr; then " \
-					   "run mmcboot; " \
-				   "else run netboot; " \
-				   "fi; " \
-			    "else " \
-					"if test ${recovery_op} = start || test ${recovery_pending_cnt} = 3; then " \
-						"run recoveryboot; " \
-					"else " \
-						"if run loadimage; then " \
-							"run mmcboot; " \
-						"else run netboot; " \
-						"fi; " \
+			"if run loadbootscript; then " \
+				"run bootscript; " \
+			"else " \
+				"if test ${recovery_op} = start || test ${recovery_pending_cnt} = 3; then " \
+					"run recoveryboot; " \
+				"else " \
+					"if run loadimage; then " \
+						"run mmcboot; " \
+					"else run netboot; " \
 					"fi; " \
 				"fi; " \
-		   "fi; " \
-	   "fi;"
+			"fi; " \
+		"fi;"
 #endif
 
 /* Link Definitions */
