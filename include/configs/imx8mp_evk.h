@@ -127,7 +127,7 @@
 		"fi;\0" \
 	"recovery_op=no\0" \
 	"recovery_pending_cnt=0\0" \
-	"recovery_img_addr=0x44000000\0" \
+	"recovery_img_addr=0x45000000\0" \
 	"recoveryfdtfile=imx8mp-evk-recovery.dtb\0" \
 	"recoveryimage=recoveryImage\0" \
 	"recoveryrootfs=recovery-rootfs.img\0" \
@@ -137,6 +137,7 @@
 	"loadrecoveryrootfs=fatload mmc ${mmcdev}:${mmcpart} ${recovery_img_addr} ${recoveryrootfs}\0" \
 	"boot_recovery_os=booti ${loadaddr} ${recovery_img_addr} ${fdt_addr_r};\0" \
 	"recoveryboot=echo Booting to RECOVERY MODE ...; " \
+		"run recoveryargs; " \
 		"if run loadrecoveryimage; then " \
 			"if run loadrecoveryfdt; then " \
 				"if run loadrecoveryrootfs; then " \
