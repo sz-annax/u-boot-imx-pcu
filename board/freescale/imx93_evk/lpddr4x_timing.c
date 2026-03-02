@@ -1,10 +1,11 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2026 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * Code generated with DDR Tool v3.3.0_7.8-d1cdb7d3.
- * DDR PHY FW2022.01
+ * Code generated with DDR Tool v3.9.0_8.7-378c9b3d8.
+ * DDR PHY FW2022.01 
+ * Part number: NXP LPDDR4X EVK and FRDM 11x11 board's default DDR part
  */
 
 #include <linux/kernel.h>
@@ -13,9 +14,9 @@
 /* Initialize DDRC registers */
 static struct dram_cfg_param ddr_ddrc_cfg[] = {
     {0x4e300110, 0x44100001},
-    {0x4e300000, 0x8000bf},
+    {0x4e300000, 0x8000ff},
     {0x4e300008, 0x0},
-    {0x4e300080, 0x80000412},
+    {0x4e300080, 0x80000512},
     {0x4e300084, 0x0},
     {0x4e300114, 0x1002},
     {0x4e300260, 0x80},
@@ -37,21 +38,21 @@ static struct dram_cfg_param ddr_ddrc_cfg[] = {
 static struct dram_fsp_cfg ddr_dram_fsp_cfg[] = {
     {
         {
-            {0x4e300100, 0x24A0321B},
-            {0x4e300104, 0xF8EE001B},
-            {0x4e300108, 0x2F2E3233},
-            {0x4e30010C, 0x0005C18B},
-            {0x4e300124, 0x1C790000},
-            {0x4e300160, 0x00009102},
+            {0x4e300100, 0x24AB321B},
+            {0x4e300104, 0xDAEE001B},
+            {0x4e300108, 0x2F2EE233},
+            {0x4e30010C, 0x0005E18B},
+            {0x4e300124, 0x1C030000},
+            {0x4e300160, 0x0000B102},
             {0x4e30016C, 0x35F00000},
             {0x4e300170, 0x8B0B0608},
             {0x4e300250, 0x00000028},
-            {0x4e300254, 0x00FE00FE},
+            {0x4e300254, 0x015B015B},
             {0x4e300258, 0x00000008},
             {0x4e30025C, 0x00000400},
             {0x4e300300, 0x224F2213},
-            {0x4e300304, 0x00FE2213},
-            {0x4e300308, 0x0A380E3D},
+            {0x4e300304, 0x015B2213},
+            {0x4e300308, 0x0A3C0E03},
         },
         {
             {0x01, 0xE4},
@@ -66,16 +67,16 @@ static struct dram_fsp_cfg ddr_dram_fsp_cfg[] = {
     },
     {
         {
-            {0x4e300100, 0x124F2100},
-            {0x4e300104, 0xF877000E},
-            {0x4e300108, 0x1816E4AA},
+            {0x4e300100, 0x12552100},
+            {0x4e300104, 0xDA77000E},
+            {0x4e300108, 0x1816B4AA},
             {0x4e30010C, 0x005101E6},
-            {0x4e300124, 0x0E3C0000},
-            {0x4e300160, 0x00009101},
+            {0x4e300124, 0x0E030000},
+            {0x4e300160, 0x0000B101},
             {0x4e30016C, 0x30900000},
             {0x4e300170, 0x8A0A0508},
             {0x4e300250, 0x00000014},
-            {0x4e300254, 0x007B007B},
+            {0x4e300254, 0x00AA00AA},
             {0x4e300258, 0x00000008},
             {0x4e30025C, 0x00000400},
         },
@@ -92,16 +93,16 @@ static struct dram_fsp_cfg ddr_dram_fsp_cfg[] = {
     },
     {
         {
-            {0x4e300100, 0x00051000},
-            {0x4e300104, 0xF855000A},
-            {0x4e300108, 0x6E620A48},
+            {0x4e300100, 0x00061000},
+            {0x4e300104, 0xDA55000A},
+            {0x4e300108, 0x6E62FA48},
             {0x4e30010C, 0x0031010D},
-            {0x4e300124, 0x04C50000},
-            {0x4e300160, 0x00009100},
+            {0x4e300124, 0x04830000},
+            {0x4e300160, 0x0000B100},
             {0x4e30016C, 0x30000000},
             {0x4e300170, 0x89090408},
             {0x4e300250, 0x00000007},
-            {0x4e300254, 0x00240024},
+            {0x4e300254, 0x00340034},
             {0x4e300258, 0x00000008},
             {0x4e30025C, 0x00000400},
         },
