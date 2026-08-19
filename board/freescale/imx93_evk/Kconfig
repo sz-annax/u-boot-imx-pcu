@@ -9,8 +9,15 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "imx93_evk"
 
+config IMX93_EVK_LPDDR4
+	bool "Using LPDDR4 Timing and PMIC voltage"
+	select IMX9_LPDDR4X
+	help
+	  Select the LPDDR4 timing and 1.1V VDDQ
+
 config IMX93_EVK_LPDDR4X
 	bool "Using LPDDR4X Timing and PMIC voltage"
+	depends on !IMX93_EVK_LPDDR4
 	default y
 	select IMX9_LPDDR4X
 	help
