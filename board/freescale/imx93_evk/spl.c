@@ -243,7 +243,11 @@ void board_init_f(ulong dummy)
 
 	clock_init_late();
 
-	power_init_board();
+	ret = power_init_board();
+	if (ret) {
+		printf("PMIC initialization failed: %d\n", ret);
+		hang();
+	}
 
 	if (!is_voltage_mode(VOLT_LOW_DRIVE))
 		set_arm_core_max_clk();

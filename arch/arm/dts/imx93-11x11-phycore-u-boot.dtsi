@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: GPL-2.0+
+/*
+ * Copyright 2026 NXP
+ */
+
+#include "imx93-11x11-evk-u-boot.dtsi"
+
+&phycore_pmic {
+	bootph-pre-ram;
+};
+
+&phycore_regulators {
+	bootph-pre-ram;
+};
+
+&pinctrl_phycore_pmic {
+	bootph-pre-ram;
+};
