@@ -68,7 +68,7 @@ void spl_board_init(void)
 }
 
 extern struct dram_timing_info dram_timing_1866mts;
-void spl_dram_init(void)
+int spl_dram_init(void)
 {
 	struct dram_timing_info *ptiming = &dram_timing;
 #if IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4X)
@@ -77,7 +77,7 @@ void spl_dram_init(void)
 #endif
 
 	printf("DDR: %uMTS\n", ptiming->fsp_msg[0].drate);
-	ddr_init(ptiming);
+	return ddr_init(ptiming);
 }
 
 #if CONFIG_IS_ENABLED(DM_PMIC_PF0900)
@@ -201,7 +201,18 @@ int power_init_board(void)
 
 	if (IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4)) {
 		/* Set VDDQ to 1.1V from buck2 */
-		pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x28);
+		ret = pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x28);
+		if (ret)
+			return ret;
+
+		ret = pmic_reg_read(dev, PCA9450_BUCK2OUT_DVS0);
+		if (ret < 0)
+			return ret;
+		if ((ret & PCA9450_DVS_BUCK_RUN_MASK) != 0x28) {
+			printf("PMIC: DDR VDDQ configuration failed: %#x\n", ret);
+			return -EIO;
+		}
+		puts("PMIC: DDR VDDQ set to 1.1V\n");
 	}
 
 	/* set standby voltage to 0.65v */
@@ -259,7 +270,11 @@ void board_init_f(ulong dummy)
 	trdc_init();
 
 	/* DDR initialization */
-	spl_dram_init();
+	ret = spl_dram_init();
+	if (ret) {
+		printf("DDR initialization failed: %d\n", ret);
+		hang();
+	}
 
 	/* Put M33 into CPUWAIT for following kick */
 	ret = m33_prepare();

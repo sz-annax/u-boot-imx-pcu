@@ -63,8 +63,12 @@ int ddr_cfg_phy(struct dram_timing_info *dram_timing)
 
 		/* Wait for the training firmware to complete */
 		ret = wait_ddrphy_training_complete();
-		if (ret)
+		if (ret) {
+			printf("DDR PHY %s training failed at %uMTS: %d\n",
+			       fsp_msg->fw_type == FW_2D_IMAGE ? "2D" : "1D",
+			       fsp_msg->drate, ret);
 			return ret;
+		}
 
 		/* Halt the microcontroller. */
 		dwc_ddrphy_apb_wr(0xd0099, 0x1);
