@@ -4,7 +4,11 @@
 # SPDX-License-Identifier:      GPL-2.0+
 #
 
+ifeq ($(CONFIG_IMX93_PHYCORE_DDR_TIMING),y)
+obj-y += ../../phytec/phycore_imx93/phycore-imx93.o imx93_phycore.o
+else
 obj-y += imx93_evk.o
+endif
 
 ifdef CONFIG_SPL_BUILD
 obj-y += spl.o

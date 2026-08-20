@@ -4,104 +4,12 @@
  */
 /dts-v1/;
 
-#include "imx93-11x11-evk.dts"
+#include "imx93-phyboard-segin.dts"
 
 / {
 	model = "PHYTEC phyCORE-i.MX93 on i.MX93 11x11 carrier";
-	compatible = "phytec,imx93-phycore-som", "fsl,imx93";
-};
-
-&lpi2c2 {
-	pmic@25 {
-		status = "disabled";
-	};
-};
-
-&iomuxc {
-	pinctrl_phycore_pmic: phycorepmicgrp {
-		fsl,pins = <
-			MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
-		>;
-	};
-};
-
-&lpi2c3 {
-	phycore_pmic: pmic@25 {
-		compatible = "nxp,pca9451a";
-		reg = <0x25>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_phycore_pmic>;
-		interrupt-parent = <&gpio4>;
-		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-		status = "okay";
-
-		phycore_regulators: regulators {
-			BUCK1 {
-				regulator-name = "VDD_SOC";
-				regulator-min-microvolt = <610000>;
-				regulator-max-microvolt = <950000>;
-				regulator-boot-on;
-				regulator-always-on;
-				regulator-ramp-delay = <3125>;
-			};
-
-			BUCK2 {
-				regulator-name = "VDDQ_1V1";
-				regulator-min-microvolt = <1100000>;
-				regulator-max-microvolt = <1100000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-
-			BUCK4 {
-				regulator-name = "VDD_3V3_BUCK";
-				regulator-min-microvolt = <3300000>;
-				regulator-max-microvolt = <3300000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-
-			BUCK5 {
-				regulator-name = "VDD_1V8";
-				regulator-min-microvolt = <1800000>;
-				regulator-max-microvolt = <1800000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-
-			BUCK6 {
-				regulator-name = "VDD_1V1";
-				regulator-min-microvolt = <1100000>;
-				regulator-max-microvolt = <1100000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-
-			LDO1 {
-				regulator-name = "PMIC_SNVS_1V8";
-				regulator-min-microvolt = <1800000>;
-				regulator-max-microvolt = <1800000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-
-			LDO4 {
-				regulator-name = "VDD_0V8";
-				regulator-min-microvolt = <800000>;
-				regulator-max-microvolt = <800000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-
-			LDO5 {
-				regulator-name = "NVCC_SD2";
-				regulator-min-microvolt = <1800000>;
-				regulator-max-microvolt = <3300000>;
-				regulator-boot-on;
-				regulator-always-on;
-			};
-		};
-	};
+	compatible = "phytec,imx93-phyboard-segin", "phytec,imx93-phycore-som",
+		     "fsl,imx93";
 };
 
 /* U-Boot appends the matching pre-relocation include after this file. */

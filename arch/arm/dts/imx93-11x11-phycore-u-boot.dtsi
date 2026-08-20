@@ -3,16 +3,10 @@
  * Copyright 2026 NXP
  */
 
-#include "imx93-11x11-evk-u-boot.dtsi"
+#include "imx93-phyboard-segin-u-boot.dtsi"
 
-&phycore_pmic {
-	bootph-pre-ram;
-};
-
-&phycore_regulators {
-	bootph-pre-ram;
-};
-
-&pinctrl_phycore_pmic {
-	bootph-pre-ram;
+&buck2 {
+	regulator-name = "VDDQ_1V1";
+	regulator-min-microvolt = <1100000>;
+	regulator-max-microvolt = <1100000>;
 };
