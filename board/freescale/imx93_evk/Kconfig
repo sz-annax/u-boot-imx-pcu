@@ -15,6 +15,13 @@ config IMX93_EVK_LPDDR4
 	help
 	  Select the LPDDR4 timing and 1.1V VDDQ
 
+config IMX93_PHYCORE_DDR_TIMING
+	bool "Use PHYTEC phyCORE LPDDR4 reference timing"
+	depends on IMX93_EVK_LPDDR4
+	help
+	  Build the PHYTEC phyCORE-i.MX93 reference LPDDR4 timing instead of
+	  the timing generated for the i.MX93 EVK board.
+
 config IMX93_EVK_LPDDR4X
 	bool "Using LPDDR4X Timing and PMIC voltage"
 	depends on !IMX93_EVK_LPDDR4
