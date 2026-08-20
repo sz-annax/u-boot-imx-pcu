@@ -5,8 +5,37 @@
 
 #include "imx93-phyboard-segin-u-boot.dtsi"
 
+/ {
+	aliases {
+		usbgadget0 = &usbg1;
+	};
+
+	usbg1: usbg1 {
+		compatible = "fsl,imx27-usb-gadget";
+		dr_mode = "peripheral";
+		chipidea,usb = <&usbotg1>;
+		status = "okay";
+	};
+};
+
+&A55_0 {
+	clocks = <&clk IMX93_CLK_A55_SEL>;
+};
+
+&A55_1 {
+	clocks = <&clk IMX93_CLK_A55_SEL>;
+};
+
 &buck2 {
 	regulator-name = "VDDQ_1V1";
 	regulator-min-microvolt = <1100000>;
 	regulator-max-microvolt = <1100000>;
+};
+
+&usbotg1 {
+	dr_mode = "peripheral";
+	disable-over-current;
+	samsung,picophy-pre-emp-curr-control = <3>;
+	samsung,picophy-dc-vol-level-adjust = <7>;
+	status = "okay";
 };
