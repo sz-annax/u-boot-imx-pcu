@@ -20,7 +20,11 @@
 #include <power/pca9450.h>
 #include <spl.h>
 
+#include "../common/imx91_93_som_detection.h"
+
 DECLARE_GLOBAL_DATA_PTR;
+
+#define EEPROM_ADDR	0x50
 
 /*
  * Will be part of drivers/power/regulator/pca9450.c
@@ -46,6 +50,23 @@ void spl_board_init(void)
 
 void spl_dram_init(void)
 {
+	if (IS_ENABLED(CONFIG_IMX91)) {
+		int ret;
+		u8 ddr_option = PHYTEC_IMX91_93_LPDDR4_1GB;
+
+		ret = phytec_eeprom_data_setup(NULL, CONFIG_PHYTEC_EEPROM_BUS,
+					      EEPROM_ADDR);
+		if (!ret && !phytec_imx91_93_detect(NULL)) {
+			phytec_print_som_info(NULL);
+			if (!IS_ENABLED(CONFIG_PHYCORE_IMX91_93_RAM_TYPE_FIX))
+				ddr_option = phytec_imx91_93_get_opt(NULL,
+						PHYTEC_IMX91_93_OPT_DDR);
+		}
+
+		if (ddr_option != PHYTEC_IMX91_93_LPDDR4_1GB)
+			puts("Unsupported RAM option; using LPDDR4 1GB timing\n");
+	}
+
 	ddr_init(&dram_timing);
 }
 
@@ -95,6 +116,20 @@ int power_init_board(void)
 		}
 	}
 
+	if (IS_ENABLED(CONFIG_IMX91)) {
+		ret = pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x28);
+		if (ret)
+			return ret;
+
+		ret = pmic_reg_read(dev, PCA9450_BUCK2OUT_DVS0);
+		if (ret < 0)
+			return ret;
+		if ((ret & PCA9450_DVS_BUCK_RUN_MASK) != 0x28) {
+			printf("PMIC: DDR VDDQ configuration failed: %#x\n", ret);
+			return -EIO;
+		}
+	}
+
 	/* set standby voltage to 0.65v */
 	if (val & PCA9450_REG_PWRCTRL_TOFF_DEB)
 		pmic_reg_write(dev, PCA9450_BUCK1OUT_DVS1, 0x0);
@@ -130,7 +165,7 @@ void board_init_f(ulong dummy)
 		printf("LC: 0x%x\n", gd->arch.lifecycle);
 	}
 
-	clock_init();
+	clock_init_late();
 
 	power_init_board();
 
@@ -146,10 +181,12 @@ void board_init_f(ulong dummy)
 	/* DDR initialization */
 	spl_dram_init();
 
-	/* Put M33 into CPUWAIT for following kick */
-	ret = m33_prepare();
-	if (!ret)
-		printf("M33 prepare ok\n");
+	if (IS_ENABLED(CONFIG_IMX93)) {
+		/* Put M33 into CPUWAIT for following kick */
+		ret = m33_prepare();
+		if (!ret)
+			printf("M33 prepare ok\n");
+	}
 
 	board_init_r(NULL, 0);
 }

@@ -1,0 +1,35 @@
+
+if TARGET_PHYCORE_IMX91 || TARGET_PHYCORE_IMX93
+
+config SYS_BOARD
+	default "phycore_imx91_93"
+
+config SYS_VENDOR
+	default "phytec"
+
+config SYS_CONFIG_NAME
+	default "phycore_imx91_93"
+
+config PHYCORE_IMX91_93_RAM_TYPE_FIX
+	bool "Use the configured phyCORE-i.MX91/93 RAM type"
+	default y if TARGET_PHYCORE_IMX91
+	help
+	  Use a fixed RAM type rather than selecting it from the PHYTEC EEPROM.
+
+choice
+	prompt "phyCORE-i.MX91/93 RAM type"
+	depends on PHYCORE_IMX91_93_RAM_TYPE_FIX
+	default PHYCORE_IMX91_93_RAM_TYPE_LPDDR4_1GB if TARGET_PHYCORE_IMX91
+	default PHYCORE_IMX91_93_RAM_TYPE_LPDDR4X_1GB if TARGET_PHYCORE_IMX93
+
+config PHYCORE_IMX91_93_RAM_TYPE_LPDDR4_1GB
+	bool "LPDDR4 1GB RAM"
+
+config PHYCORE_IMX91_93_RAM_TYPE_LPDDR4X_1GB
+	bool "LPDDR4X 1GB RAM"
+
+endchoice
+
+source "board/phytec/common/Kconfig"
+
+endif
