@@ -21,14 +21,24 @@
 #endif
 
 #ifdef CONFIG_DISTRO_DEFAULTS
+#ifdef CONFIG_CMD_USB
+#define BOOT_TARGET_USB(func) func(USB, usb, 0)
+#else
+#define BOOT_TARGET_USB(func)
+#endif
+
 #define BOOT_TARGET_DEVICES(func) \
 	func(MMC, mmc, 0) \
 	func(MMC, mmc, 1) \
-	func(USB, usb, 0)
+	BOOT_TARGET_USB(func)
 
 #include <config_distro_bootcmd.h>
 #else
 #define BOOTENV
+#endif
+
+#ifndef CFG_MMCROOT
+#define CFG_MMCROOT "mmcroot=/dev/mmcblk1p2 rootwait rw\0"
 #endif
 
 #define JH_ROOT_DTB    "imx93-11x11-evk-root.dtb"
@@ -80,7 +90,7 @@
 	"bootm_size=0x10000000\0" \
 	"mmcdev=" __stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
 	"mmcpart=1\0" \
-	"mmcroot=PARTLABEL=rootfs rootwait rw\0" \
+	CFG_MMCROOT \
 	"mmcautodetect=yes\0" \
 	"mmcargs=setenv bootargs ${jh_clk} ${mcore_clk} console=${console} root=${mmcroot}\0 " \
 	"loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};\0" \
