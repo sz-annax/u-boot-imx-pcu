@@ -8,7 +8,8 @@ config SYS_VENDOR
 	default "phytec"
 
 config SYS_CONFIG_NAME
-	default "imx93_phycore"
+	default "phycore_imx91_93" if TARGET_PHYCORE_IMX91
+	default "imx93_phycore" if TARGET_PHYCORE_IMX93
 
 config PHYCORE_IMX91_93_RAM_TYPE_FIX
 	bool "Use the configured phyCORE-i.MX91/93 RAM type"
