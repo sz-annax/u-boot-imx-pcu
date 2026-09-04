@@ -2,8 +2,10 @@
 
 #include <common.h>
 #include <efi_loader.h>
+#include <env.h>
 #include <asm/arch-imx9/imx93_pins.h>
 #include <asm/arch/sys_proto.h>
+#include <asm/mach-imx/boot_mode.h>
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_FSEL2)
 
@@ -35,6 +37,32 @@ struct efi_capsule_update_info update_info = {
 int board_early_init_f(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart_pads, ARRAY_SIZE(uart_pads));
+
+	return 0;
+}
+
+int board_init(void)
+{
+	return 0;
+}
+
+int board_mmc_get_env_dev(int devno)
+{
+	return devno;
+}
+
+int board_late_init(void)
+{
+	switch (get_boot_device()) {
+	case SD2_BOOT:
+		env_set_ulong("mmcdev", 1);
+		break;
+	case MMC1_BOOT:
+		env_set_ulong("mmcdev", 0);
+		break;
+	default:
+		break;
+	}
 
 	return 0;
 }

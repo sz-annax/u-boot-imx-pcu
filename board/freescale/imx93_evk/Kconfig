@@ -7,6 +7,7 @@ config SYS_VENDOR
 	default "freescale"
 
 config SYS_CONFIG_NAME
+	default "imx93_phycore" if IMX93_PHYCORE_DDR_TIMING
 	default "imx93_evk"
 
 config IMX93_EVK_LPDDR4

@@ -5,7 +5,7 @@
 #
 
 ifeq ($(CONFIG_IMX93_PHYCORE_DDR_TIMING),y)
-obj-y += ../../phytec/phycore_imx93/phycore-imx93.o imx93_phycore.o
+obj-y += imx93_phycore.o
 else
 obj-y += imx93_evk.o
 endif
@@ -13,7 +13,7 @@ endif
 ifdef CONFIG_SPL_BUILD
 obj-y += spl.o
 ifeq ($(CONFIG_IMX93_PHYCORE_DDR_TIMING),y)
-obj-y += ../../phytec/phycore_imx93/lpddr4_timing.o
+obj-y += ../../phytec/phycore_imx91_93/lpddr4_timing_imx93.o
 else
 obj-$(CONFIG_IMX93_EVK_LPDDR4) += lpddr4_timing_1gb.o
 endif
