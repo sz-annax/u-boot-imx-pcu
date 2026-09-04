@@ -12,7 +12,7 @@ obj-y += phycore-imx91-93.o
 ifdef CONFIG_SPL_BUILD
 obj-y += spl.o
 ifdef CONFIG_IMX91
-obj-$(CONFIG_IMX9_LPDDR4X) += lpddr4_timing_imx91.o
+obj-$(CONFIG_IMX9_LPDDR4X) += ../../freescale/imx91_qsb/lpddr4_timing.o
 else
 obj-$(CONFIG_IMX9_LPDDR4X) += lpddr4_timing_imx93.o
 endif
