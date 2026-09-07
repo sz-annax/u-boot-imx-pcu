@@ -50,7 +50,8 @@ void spl_board_init(void)
 
 void spl_dram_init(void)
 {
-	if (IS_ENABLED(CONFIG_IMX91)) {
+	if (IS_ENABLED(CONFIG_IMX91) &&
+	    !IS_ENABLED(CONFIG_PHYCORE_IMX91_93_RAM_TYPE_FIX)) {
 		int ret;
 		u8 ddr_option = PHYTEC_IMX91_93_LPDDR4_1GB;
 
@@ -58,9 +59,8 @@ void spl_dram_init(void)
 					      EEPROM_ADDR);
 		if (!ret && !phytec_imx91_93_detect(NULL)) {
 			phytec_print_som_info(NULL);
-			if (!IS_ENABLED(CONFIG_PHYCORE_IMX91_93_RAM_TYPE_FIX))
-				ddr_option = phytec_imx91_93_get_opt(NULL,
-						PHYTEC_IMX91_93_OPT_DDR);
+			ddr_option = phytec_imx91_93_get_opt(NULL,
+					PHYTEC_IMX91_93_OPT_DDR);
 		}
 
 		if (ddr_option != PHYTEC_IMX91_93_LPDDR4_1GB)

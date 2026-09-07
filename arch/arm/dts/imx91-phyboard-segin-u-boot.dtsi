@@ -8,6 +8,10 @@
 #include "imx91-u-boot.dtsi"
 #include "imx91-93-phyboard-segin-common-u-boot.dtsi"
 
+&lpi2c3 {
+	/delete-node/ eeprom@50;
+};
+
 / {
 	/*
 	 * The phyCORE-i.MX91 u-boot uses the imx91-phyboard-segin.dts as

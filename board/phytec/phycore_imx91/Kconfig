@@ -1,0 +1,11 @@
+config SYS_BOARD
+	default "phycore_imx91"
+	depends on TARGET_PHYCORE_IMX91
+
+config SYS_VENDOR
+	default "phytec"
+	depends on TARGET_PHYCORE_IMX91
+
+config SYS_CONFIG_NAME
+	default "imx91_phycore"
+	depends on TARGET_PHYCORE_IMX91

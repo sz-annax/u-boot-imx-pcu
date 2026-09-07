@@ -92,6 +92,7 @@ endchoice
 source "board/freescale/imx91_evk/Kconfig"
 source "board/freescale/imx91_qsb/Kconfig"
 source "board/freescale/imx93_evk/Kconfig"
+source "board/phytec/phycore_imx91/Kconfig"
 source "board/phytec/phycore_imx91_93/Kconfig"
 source "board/variscite/imx93_var_som/Kconfig"
 source "board/freescale/imx93_qsb/Kconfig"
