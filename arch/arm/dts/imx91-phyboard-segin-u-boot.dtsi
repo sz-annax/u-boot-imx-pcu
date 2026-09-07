@@ -19,4 +19,23 @@
 	 * periphery.
 	 */
 	model = "PHYTEC phyCORE-i.MX91";
+
+	aliases {
+		usbgadget0 = &usbg1;
+	};
+
+	usbg1: usbg1 {
+		compatible = "fsl,imx27-usb-gadget";
+		dr_mode = "peripheral";
+		chipidea,usb = <&usbotg1>;
+		status = "okay";
+	};
+};
+
+&A55_0 {
+	clocks = <&clk IMX91_CLK_A55_SEL>;
+};
+
+&tempsense0 {
+	status = "okay";
 };
