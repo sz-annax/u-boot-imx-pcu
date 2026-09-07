@@ -35,9 +35,9 @@ void spl_board_init(void)
 	puts("Normal Boot\n");
 }
 
-void spl_dram_init(void)
+int spl_dram_init(void)
 {
-	ddr_init(&dram_timing);
+	return ddr_init(&dram_timing);
 }
 
 int power_init_board(void)
@@ -130,6 +130,10 @@ void board_init_f(ulong dummy)
 
 	soc_power_init();
 	trdc_init();
-	spl_dram_init();
+	ret = spl_dram_init();
+	if (ret) {
+		printf("ERROR: DDR initialization failed: %d\n", ret);
+		hang();
+	}
 	board_init_r(NULL, 0);
 }
