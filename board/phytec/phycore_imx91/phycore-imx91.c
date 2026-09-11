@@ -3,6 +3,27 @@
 #include <asm/arch/sys_proto.h>
 #include <asm/mach-imx/boot_mode.h>
 #include <env.h>
+#include <net.h>
+
+static void migrate_fec_mac_address(void)
+{
+	u8 enetaddr[ARP_HLEN];
+	int ret;
+
+	if (env_get("ethaddr") ||
+	    !eth_env_get_enetaddr("eth1addr", enetaddr))
+		return;
+
+	ret = eth_env_set_enetaddr("ethaddr", enetaddr);
+	if (ret) {
+		printf("Failed to set ethaddr from eth1addr: %d\n", ret);
+		return;
+	}
+
+	ret = env_save();
+	if (ret)
+		printf("Failed to save migrated ethaddr: %d\n", ret);
+}
 
 int board_init(void)
 {
@@ -33,6 +54,8 @@ int board_late_init(void)
 	default:
 		break;
 	}
+
+	migrate_fec_mac_address();
 
 	return 0;
 }
